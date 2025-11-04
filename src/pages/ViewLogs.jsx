@@ -68,6 +68,15 @@ function ViewLogs({ logs, loading, message, currentPage, setCurrentPage, formatD
                     min="1"
                     defaultValue={currentPage}
                     key={currentPage}
+                    onChange={(e) => {
+                      // เปลี่ยนหน้าทันทีเมื่อใช้ลูกศรขึ้น/ลง
+                      if (e.nativeEvent.inputType === undefined) {
+                        const value = parseInt(e.target.value);
+                        if (value > 0) {
+                          setCurrentPage(value);
+                        }
+                      }
+                    }}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         const value = parseInt(e.target.value);
@@ -79,9 +88,9 @@ function ViewLogs({ logs, loading, message, currentPage, setCurrentPage, formatD
                     }}
                     onBlur={(e) => {
                       const value = parseInt(e.target.value);
-                      if (value > 0) {
+                      if (value > 0 && value !== currentPage) {
                         setCurrentPage(value);
-                      } else {
+                      } else if (value <= 0) {
                         e.target.value = currentPage;
                       }
                     }}
